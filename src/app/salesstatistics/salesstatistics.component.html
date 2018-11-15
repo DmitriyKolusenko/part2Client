@@ -1,0 +1,27 @@
+
+   <table class="ts-shop-base-table ts-shop-salesstatistics-table">
+      <thead class="ts-shop-base-table-header">
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Weight</th>
+            <th>In stock</th>
+            <th>Category</th>
+            <th>Volume</th>
+            <th>Count Sales</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of bestSalesProducts">
+            <td>{{product.name}}</td>
+            <td>{{product.price | currency : '€'}}</td>
+            <td>{{product.weight}}</td>
+            <td>{{product.inStock}}</td>
+            <td>{{product.category}}</td>
+            <td>{{product.volume}}</td>
+            <td>{{product.countSales}}</td>
+          </tr>
+        </tbody>
+   </table>
+   
+ 

@@ -1,0 +1,48 @@
+
+   <table class="ts-shop-base-table ts-shop-orders-table">
+     
+       <thead class="ts-shop-base-table-header">
+          <tr>
+              <th>Заказ № </th>
+              <th> Клиент </th>
+              <th> Оплата нал. </th>
+              <th> Оплачено </th>
+              <th> Доставлено </th>
+              <th> 
+                <div>Товары</div>
+                <table class="ts-shop-base-table ts-shop-orders-table">
+                    <thead class="ts-shop-base-table-header">
+                      <tr>
+                        <th width="60%">Product</th>
+                        <th width="20%">Count</th>
+                        <th width="20%">Total price</th>
+                      </tr>
+                    </thead>
+                </table>
+              </th>
+            </tr>
+       </thead>
+       <tbody>
+          <tr *ngFor="let order of orders">
+              <td>{{order.ordernumber}}</td>
+              <td>{{client}}</td>
+              <td align="center"><div class={{getStyle(order.iscash)}}>{{getLabel(order.iscash)}}</div></td>
+              <td align="center"><div class={{getStyle(order.ispaid)}}>{{getLabel(order.ispaid)}}</div></td>
+              <td align="center"><div class={{getStyle(order.delivery)}}>{{getLabel(order.delivery)}}</div></td>
+              <td>
+                <table class="ts-shop-base-table ts-shop-orders-table">
+                  <tbody>
+                      <tr *ngFor="let product of order.products">
+                          <td width="60%">{{product.goodsname}}</td>
+                          <td width="20%">{{product.count}}</td>
+                          <td width="20%">{{product.count*product.price | currency : '€'}}</td>
+                      </tr>
+                  </tbody>  
+                </table> 
+                <div><b>Total price:   {{getTotalCost(order.products) | currency : '€'}}</b></div>
+              </td>
+            </tr>
+       </tbody>       
+   </table>
+   
+ 

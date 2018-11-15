@@ -1,0 +1,14 @@
+<div class="ts-shop-header">
+  <div class="ts-shop-header-title">
+    {{ title }}
+  </div>
+<div class="ts-shop-nav-bar">
+    <a *ngIf="!addStatus" routerLink="/autorization" routerLinkActive="ts-shop-nav-bar-active">Autorization</a>
+    <a *ngIf="addStatus&&hasRole('MANAGER')" routerLink="/clients" routerLinkActive="ts-shop-nav-bar-active">Clients</a>
+    <a routerLink="/products" routerLinkActive="ts-shop-nav-bar-active">Products</a>
+    <a *ngIf="addStatus" routerLink="/orders" routerLinkActive="ts-shop-nav-bar-active">Orders</a>
+    <a routerLink="/salesstatistics" routerLinkActive="ts-shop-nav-bar-active">Sales Statistics</a>
+    <a *ngIf="addStatus" routerLink="/profile" routerLinkActive="ts-shop-nav-bar-active">Profile</a>
+  </div>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,24 @@
+<div *ngIf="isLoading" class="ts-shop-loading">
+  <div class="ts-shop-loading-indicator"></div>
+  <div>Loading</div>
+</div>
+<div [ngClass]="{ 'ts-shop-hidden': isLoading }">
+  <table class="ts-shop-base-table ts-shop-clients-table">
+    <thead class="ts-shop-base-table-header">
+      <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Birthdate</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients">
+        <td>{{client.name}}</td>
+        <td>{{client.surname}}</td>
+        <td>{{client.dateofbirth | date : "MM/dd/yyyy" }}</td>
+        <td>{{client.email}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

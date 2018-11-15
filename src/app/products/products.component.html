@@ -1,0 +1,67 @@
+<div *ngIf="isLoading" class="ts-shop-loading">
+  <div class="ts-shop-loading-indicator"></div>
+  <div>Loading</div>
+</div>
+<div [ngClass]="{ 'ts-shop-hidden': isLoading }">
+  <div class="ts-shop-filters">
+    <input type="text" placeholder="Name" [(ngModel)]="filters.name" (ngModelChange)="filterProducts()">
+    <input type="text" placeholder="Price" [(ngModel)]="filters.price" (ngModelChange)="filterProducts()">
+    <button type="button" class="ts-shop-btn-remove" [disabled]="isFiltersEmpty()" (click)="clearFilters()">&times;</button>
+  </div>
+  <table style width="100%">
+    <tr>
+      <th style width="80%">
+          <table class="ts-shop-base-table ts-shop-products-table">
+              <thead class="ts-shop-base-table-header">
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Weight</th>
+                  <th>In stock</th>
+                  <th>Category</th>
+                  <th>Volume</th>
+                  <th *ngIf="isLoggined">Order</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <td></td>
+                <tr *ngFor="let product of (products | tsShopFilter : filters)" [ngStyle]="setAvailabilityColour(product)">
+                  <td>{{product.goodsname}}</td>
+                  <td>{{product.price | currency : '€'}}</td>
+                  <td>{{product.weight}}</td>
+                  <td>{{product.instock}}</td>
+                  <td>{{product.goodsparameters}}</td>
+                  <td>{{product.volume}}</td>
+                  <td *ngIf="isLoggined">
+                    <button class="ts-shop-btn-remove" (click)="setProductToOrder(product)">+</button>
+                  </td>
+                </tr>  
+              </tbody>
+            </table>
+      </th>
+      <th *ngIf="isLoggined" valign="top">
+        <div width="100%">Bucket</div>
+        <table class="ts-shop-base-table ts-shop-products-table">
+          <thead class="ts-shop-base-table-header">
+            <tr>
+              <th>Product</th>
+              <th>Count</th>
+              <th>Total price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of getOrderedProducts">
+              <td>{{product.goodsname}}</td>
+              <td>{{product.count }}</td>
+              <td>{{product.count*product.price | currency : '€'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="bucketMessage">Размещенные заказы на вкладке Orders, добавьте товары для нового заказа</div>
+        <button *ngIf="!bucketMessage" (click)="placeOrder()">Place Order</button>
+        <button *ngIf="!bucketMessage" (click)="clearOrder()">Clear Order</button>
+      </th>
+    </tr>
+  </table>
+  
+</div>
