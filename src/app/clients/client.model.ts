@@ -1,4 +1,6 @@
 import { Orders } from "../orders/orders.model";
+import { Adress } from "./adress.model";
+import { DateOfBirth } from "./dateOfBirth.model";
 
 export class Client {
     
@@ -9,19 +11,9 @@ export class Client {
     public email: string,
 //    public password: string,
     public roles: string,
-    public dateofbirth:{
-        year: number,
-        month: string,
-        dayOfMonth: number
-    },
-    public adress:{
-        city: string,
-        country: string,
-        postalcode: string,
-        street: string,
-        house: string,
-        flat: string
-    },
+    public dateofbirth: DateOfBirth,
+    public formatteddateofbirth: string,
+    public adress:Adress,
     public orders: Orders[]
     )
  { }

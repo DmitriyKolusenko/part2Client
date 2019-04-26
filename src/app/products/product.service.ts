@@ -9,17 +9,17 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
-  constructor(private http: HttpClient, private http1: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   public getProducts(): Observable<Product[]> {
-    
-    return this.http.get<Product[]>('http://localhost:8080/api/products');
+    return this.http.get<Product[]>('/api/products');
   }
 
-  public placeOrder(products: Product[], str: string):Observable<any>{
-    return this.http1.post<any>('http://localhost:8080/createorr',{
-      sessionId: str,
-      order: products
-    });
+  public loadProducts(products: Product[]): Observable<Product[]> {
+    return this.http.post<Product[]>('api/products/writenew',products);
+  }
+
+  public loadReceipts(products: Product[]): Observable<Product[]> {
+    return this.http.post<Product[]>('api/products/addreceipts',products);
   }
 }

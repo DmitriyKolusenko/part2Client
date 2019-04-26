@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Client } from './client.model';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/internal/operators';
-import { AuthorizationService } from '../autorization/autorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +10,16 @@ import { AuthorizationService } from '../autorization/autorization.service';
 export class ClientService {
   public clients: Observable<Client[]>;
 
-  constructor(private http: HttpClient, private _authorisationService: AuthorizationService) {
+  constructor(private http: HttpClient) {
    }
 
-  public getClients(str: string): Observable<Client[]> {
-    this.clients = this.http.get<Client[]>('http://localhost:8080/api/clients');
+  public getClients(): Observable<Client[]> {
+    this.clients = this.http.get<Client[]>('/api/clients');
     return this.clients;
-  /*  return this.http.get<Client[]>('../../assets/clients.json').pipe(delay(5000));*/
+  }
+
+  public setRole(client: Client): Observable<Client[]> {
+    return this.http.post<Client[]>('/api/clients/setrole',client)
   }
 
 }

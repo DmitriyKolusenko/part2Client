@@ -11,19 +11,16 @@ import { Client } from "../clients/client.model";
     providedIn: 'root'
   })
   export class OrdersService {
-    public orders: Observable<Orders[]>;
-    public _loginId: [LoginID, Client];
   
-    constructor(private http: HttpClient, private appComponent: AppComponent) {
+    constructor(private http: HttpClient) {
      }
   
-   /* public getOrders(str: string): Orders[] {
-      return this.appComponent._authData.orders
-      this.orders = this.http.get<Orders[]>('http://localhost:8080/orders?sessionId='
-      +str);//=============================
-      return this.orders;
-      return this.http.get<Client[]>('../../assets/clients.json').pipe(delay(5000));
-    }*/
-  
+    public getOrders(): Observable<Client> {
+      return this.http.get<Client>('/api/clients/user');
+    }
+
+    public sendOrders(orders: Orders[]): Observable<Client> {
+      return this.http.post<Client>('/api/writeorder/change', orders)
+    }
   }
   

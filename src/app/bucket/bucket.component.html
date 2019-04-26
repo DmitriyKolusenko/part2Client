@@ -1,0 +1,55 @@
+<div width="100%">Bucket</div>
+<table *ngIf="!bucketMessage" class="ts-shop-base-table ts-shop-products-table">
+  <thead class="ts-shop-base-table-header">
+    <tr>
+      <th>Product</th>
+      <th>Count</th>
+      <th>Total price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of productsOrdered">
+      <td>{{product.goodsname}}</td>
+      <td>{{product.count }}</td>
+      <td>{{product.count*product.price | currency : '€'}}</td>
+      <td>
+        <button class="ts-shop-btn-remove" (click)="removeProductFromOrder(product)">-</button>
+      </td>
+    </tr>
+    <tr *ngIf="totalCost>0">
+      <td>Total cost:</td>
+      <td>{{totalCost | currency : '€'}}</td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="bucketMessage">The Bucket is empty. Placed orders on the tab "Orders", add products for a new order.</div>
+        <button *ngIf="!bucketMessage" (click)="cardMenu()">Place Order</button>
+        <button *ngIf="!bucketMessage" (click)="clearOrder()">Clear Order</button>
+<div *ngIf="_isCardMenu">
+    <form #myForm="ngForm" novalidate (ngSubmit)="setData(myForm)">
+        <table>
+            <tbody>
+              <tr>
+                <td>Input card number</td>
+                <td><input type="text" name="cardsnumber" ngModel required></td>
+              </tr>
+              <tr>
+                  <td>Input card holder</td>
+                  <td><input type="text" name="cardholder" ngModel required></td>
+              </tr>
+              <tr>
+                  <td>Input cvv</td>
+                  <td><input type="text" name="cvv" ngModel required></td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="submit">
+    </form>
+</div>
+<div *ngIf="_isConfirmMenu">
+  <form #myFormConfirm="ngForm" novalidate (ngSubmit)="sendConfirmCode(myFormConfirm)">
+    <div>Input confirm code from SMS</div>
+    <input type="text" name="confirmcode" ngModel required>
+    <input type="submit">
+  </form>
+</div>

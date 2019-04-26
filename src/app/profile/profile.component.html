@@ -2,32 +2,96 @@
    <table class="ts-shop-profile-table">
      <tbody >
         <tr>
-            <td>Имя</td>
+            <td>Name</td>
             <td>{{profile?.name}}</td>
         </tr>
         <tr>
-            <td>Фамилия</td>
+            <td>Surname</td>
             <td>{{profile?.surname}}</td>
         </tr>
         <tr>
-            <td>День рождения</td>
+            <td>Date of birth</td>
             <td>{{profile?.dateofbirth.year}} {{profile?.dateofbirth.month}} {{profile?.dateofbirth.dayOfMonth}}</td>
         </tr>
         <tr>
-            <td>Почта</td>
+            <td>eMail</td>
             <td>{{profile?.email}}</td>
         </tr>
         <tr>
-            <td>Статус</td>
+            <td>Roles</td>
             <td>{{profile?.roles}}</td>
         </tr>
         <tr>
-            <td>Адрес</td>
-            <td>{{profile.adress.postalcode}} {{profile.adress.country}} {{profile.adress.city}} 
-              {{profile.adress.street}} {{profile.adress.house}} {{profile.adress.flat}}</td>
+            <td>Adress</td>
+            <td>{{profile?.adress.postalcode}} {{profile?.adress.country}} {{profile?.adress.city}} 
+              {{profile?.adress.street}} {{profile?.adress.house}} {{profile?.adress.flat}}</td>
         </tr>
      </tbody>
    </table>
    <button (click)="logOut()">LogOut</button>
-   
+
+
+   <button (click)="setEditProfile()">Edit Profile</button>
+   <div *ngIf="editProfile">
+   <form #myForm="ngForm" novalidate (ngSubmit)="setData(myForm)">
+       <table>
+           <tbody>
+                <tr>
+                    <td>
+                        <table class="ts-shop-profile-table">
+                            <tbody >
+                                <tr>
+                                    <td>Surname</td>
+                                    <td><input type="text" name="surname" ngModel required></td>
+                                </tr>
+                                <tr>
+                                    <td>Date of birth</td>
+                                    <td><input type="date" name="dateofbirth" ngModel required></td>
+                                </tr>
+                                <tr>
+                                    <td>eMail</td>
+                                    <td><input type="text" name="email" ngModel required></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tbody>
+                                    <tr>
+                                        <td>Adress</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PostalCode</td>
+                                        <td><input type="text" name="postalcode" ngModel required></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Country</td>
+                                        <td><input type="text" name="country" ngModel required></td>
+                                    </tr>
+                                    <tr>
+                                        <td>City</td>
+                                        <td><input type="text" name="city" ngModel required></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Street</td>
+                                        <td><input type="text" name="street" ngModel required></td>
+                                    </tr>
+                                    <tr>
+                                        <td>House</td>
+                                        <td><input type="text" name="house" ngModel required></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Flat</td>
+                                        <td><input type="text" name="flat" ngModel required></td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+           </tbody>  
+       </table>
+       <input type="submit" title="Send new data">
+</form>
+</div>
  

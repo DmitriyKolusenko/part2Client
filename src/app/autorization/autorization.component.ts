@@ -28,7 +28,7 @@ export class AutorizationComponent  {
     console.log(this.value.userName);
     console.log(this.value.password);
     this.authorizationService.login(this.value);
-    this.appComponent.authLogin();
+    this.appComponent.setData();
   }
 
  /* get sessionId(): string{

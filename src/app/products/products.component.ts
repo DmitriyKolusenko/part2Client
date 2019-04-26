@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from './product.model';
 import { ProductService } from './product.service';
 import { ProductCategory } from './product-category.enum';
-import { AppComponent } from '../app.component';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { Client } from '../clients/client.model';
 
 @Component({
   selector: 'ts-shop-products',
@@ -15,36 +17,43 @@ export class ProductsComponent implements OnInit {
   private _filters: any = {};
   private _isLoading: boolean = false;
   private _productsOrdered: Product[] = [];
-  private _anyResponse: any;
-  private bool: boolean = true;
+  private _bucketMessage: boolean = true;
+  private _productsLoaded: Product[];
+  private _isProductsLoaded: boolean = false;
 
-  constructor(private productService: ProductService, private _appComponent: AppComponent) { }
+  constructor(private productService: ProductService, private router: Router) { }
 
   public setProductToOrder(product: Product): void{
     for (var i=0; i<this._productsOrdered.length; i++){
       if (this._productsOrdered[i]==product){
         this._productsOrdered[i].count = this._productsOrdered[i].count + 1;
+        localStorage.setItem('bucket',JSON.stringify(this._productsOrdered));
         return;
       }
     }
-    this.bool = false;
+    this._bucketMessage = false;
     product.count = 1;
     this._productsOrdered[this._productsOrdered.length] = product;
+    localStorage.setItem('bucket',JSON.stringify(this._productsOrdered))
   }
 
   public clearOrder(): void {
     this._productsOrdered = [];
-    this.bool = true;
+    this._bucketMessage = true;
+    localStorage.removeItem('bucket')
   }
 
   public placeOrder(): void{
-    this.productService.placeOrder(this._productsOrdered, this._appComponent.sessionId).subscribe(
-      (anydata: any)=>{
-        this._anyResponse = anydata;
-        this.clearOrder();
-      }
-        
-    );
+    const user = localStorage.getItem('currentUser')
+    if (user){
+     this.router.navigate(['/bucket'])
+    } else {
+      this.router.navigate(['/autorization']);
+  }
+  }
+
+  get isProductsLoaded(): boolean {
+    return this._isProductsLoaded;
   }
 
   get getOrderedProducts(): Product[]{
@@ -65,6 +74,11 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.getProducts();
+    const bucket = localStorage.getItem('bucket')
+    if(bucket){
+      this._productsOrdered = JSON.parse(bucket);
+      this._bucketMessage = false;
+    }
   }
 
   private getProducts(): void {
@@ -109,10 +123,41 @@ export class ProductsComponent implements OnInit {
   }
   
   get bucketMessage(): boolean {
-    return this.bool;
+    return this._bucketMessage;
   }
 
-  get isLoggined(): boolean {
-    return this._appComponent.authStatus;
+ /* public load(): void {
+    var file = document.getElementById('file1').files[0];
+    const reader = new FileReader();
+    reader.onload = e => {
+      var contents = event.target.result;
+      this._productsLoaded = JSON.parse(contents);
+      this._isProductsLoaded = true;
+  };
+   
+  reader.onerror = function(event) {
+      console.error("Файл не может быть прочитан! код " + event.target.error.code);
+  };
+  reader.readAsText(file);
+  }*/
+
+  public send(): void {
+    this.productService.loadProducts(this._productsLoaded).subscribe(
+      (productsNew:Product[]) => {
+        this._products = productsNew;
+        this._isProductsLoaded = false;
+      }
+    )
+  }
+
+  get isAccess():boolean {
+    const user = localStorage.getItem('currentUser');
+    if (user){
+      var client: Client = JSON.parse(user);
+      if(client.roles == "MANAGER"){
+        return true;
+      }
+    }
+    return false;
   }
 }

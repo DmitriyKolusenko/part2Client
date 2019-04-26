@@ -4,7 +4,7 @@
 </div>
 <div [ngClass]="{ 'ts-shop-hidden': isLoading }">
   <div class="ts-shop-filters">
-    <input type="text" placeholder="Name" [(ngModel)]="filters.name" (ngModelChange)="filterProducts()">
+    <input type="text" placeholder="Name" [(ngModel)]="filters.goodsname" (ngModelChange)="filterProducts()">
     <input type="text" placeholder="Price" [(ngModel)]="filters.price" (ngModelChange)="filterProducts()">
     <button type="button" class="ts-shop-btn-remove" [disabled]="isFiltersEmpty()" (click)="clearFilters()">&times;</button>
   </div>
@@ -20,7 +20,7 @@
                   <th>In stock</th>
                   <th>Category</th>
                   <th>Volume</th>
-                  <th *ngIf="isLoggined">Order</th>
+                  <th>Order</th>
                 </tr>
               </thead>
               <tbody>
@@ -32,14 +32,14 @@
                   <td>{{product.instock}}</td>
                   <td>{{product.goodsparameters}}</td>
                   <td>{{product.volume}}</td>
-                  <td *ngIf="isLoggined">
+                  <td>
                     <button class="ts-shop-btn-remove" (click)="setProductToOrder(product)">+</button>
                   </td>
                 </tr>  
               </tbody>
             </table>
       </th>
-      <th *ngIf="isLoggined" valign="top">
+      <th valign="top">
         <div width="100%">Bucket</div>
         <table class="ts-shop-base-table ts-shop-products-table">
           <thead class="ts-shop-base-table-header">
@@ -57,11 +57,13 @@
             </tr>
           </tbody>
         </table>
-        <div *ngIf="bucketMessage">Размещенные заказы на вкладке Orders, добавьте товары для нового заказа</div>
+        <div *ngIf="bucketMessage">Placed orders on the tab "Orders", add products for a new order.</div>
         <button *ngIf="!bucketMessage" (click)="placeOrder()">Place Order</button>
         <button *ngIf="!bucketMessage" (click)="clearOrder()">Clear Order</button>
       </th>
     </tr>
   </table>
-  
 </div>
+<input *ngIf="isAccess&&!isProductsLoaded" type="file" id="file1">
+<button *ngIf="isAccess&&!isProductsLoaded" (click)="load()">Load</button>
+<button *ngIf="isAccess&&isProductsLoaded" (click)="send()">Write data</button>

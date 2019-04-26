@@ -3,13 +3,13 @@
      
        <thead class="ts-shop-base-table-header">
           <tr>
-              <th>Заказ № </th>
-              <th> Клиент </th>
-              <th> Оплата нал. </th>
-              <th> Оплачено </th>
-              <th> Доставлено </th>
+              <th> Order № </th>
+              <th> Client </th>
+              <th> Is paymend by card </th>
+              <th> Is paid </th>
+              <th> Is delivered </th>
               <th> 
-                <div>Товары</div>
+                <div >Goods </div>
                 <table class="ts-shop-base-table ts-shop-orders-table">
                     <thead class="ts-shop-base-table-header">
                       <tr>
@@ -28,7 +28,9 @@
               <td>{{client}}</td>
               <td align="center"><div class={{getStyle(order.iscash)}}>{{getLabel(order.iscash)}}</div></td>
               <td align="center"><div class={{getStyle(order.ispaid)}}>{{getLabel(order.ispaid)}}</div></td>
-              <td align="center"><div class={{getStyle(order.delivery)}}>{{getLabel(order.delivery)}}</div></td>
+              <td align="center"><div class={{getStyleClick(order)}} (click)="onClick(order)">
+                {{getLabelClicked(order)}}</div>
+              </td>
               <td>
                 <table class="ts-shop-base-table ts-shop-orders-table">
                   <tbody>
@@ -44,5 +46,6 @@
             </tr>
        </tbody>       
    </table>
+   <button *ngIf="ordersChangedStat(orders)" (click)="onClickSendChange()">Accept change</button>
    
  

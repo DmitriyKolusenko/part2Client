@@ -8,19 +8,18 @@ import { Client } from "../clients/client.model";
     providedIn: 'root'
   })
   
-  export class ProfileService implements OnInit{
+  export class ProfileService {
 
-    private client: Observable<Client>;
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient, private appComponent: AppComponent) {}
-
-    ngOnInit(): void {
-        console.log('token:' + this.appComponent.sessionId)
-        
-    }
 
     get getclient(): Observable<Client>{
-        return this.client;
+        return this.http.get<Client>('/api/clients/user');
+    }
+
+    public setData(client: Client): Observable<any>{
+      return this.http.post<any>('/api/clients/changeuser',
+        client)
     }
   }
 

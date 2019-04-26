@@ -10,6 +10,6 @@ import { HttpClient } from "@angular/common/http";
     public products: Observable<Product[]>;
     constructor (private http: HttpClient){ }
     public getBestSalesProducts(): Observable<Product[]>{
-        return this.http.get<Product[]>("http://localhost:8080/bestsales")
+        return this.http.get<Product[]>("/api/products/totalsaled")
     }
   }

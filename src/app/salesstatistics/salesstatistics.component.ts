@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../products/product.model';
 import { SalesStatisticsService } from './salesstatistics.service';
 
-
 @Component({
   selector: 'app-salesstatistics',
   templateUrl: './salesstatistics.component.html',
@@ -27,6 +26,7 @@ export class SalesstatisticsComponent implements OnInit {
   }
   
   get bestSalesProducts(): Product[]{
+    this._products = this._products.reverse();
     return this._products;
   }
 }

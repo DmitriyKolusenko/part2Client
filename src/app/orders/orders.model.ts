@@ -8,7 +8,8 @@ export class Orders{
         public client: Client,
         public products: Product[],
         public ispaid: boolean,
-        public delivery: boolean
+        public delivery: boolean,
+        public deliverynewstat: boolean
     ){}
     
 

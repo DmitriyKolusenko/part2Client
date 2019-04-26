@@ -13,13 +13,13 @@
         </thead>
         <tbody>
           <tr *ngFor="let product of bestSalesProducts">
-            <td>{{product.name}}</td>
+            <td>{{product.goodsname}}</td>
             <td>{{product.price | currency : '€'}}</td>
             <td>{{product.weight}}</td>
-            <td>{{product.inStock}}</td>
-            <td>{{product.category}}</td>
+            <td>{{product.instock}}</td>
+            <td>{{product.goodsparameters}}</td>
             <td>{{product.volume}}</td>
-            <td>{{product.countSales}}</td>
+            <td>{{product.totalsaled}}</td>
           </tr>
         </tbody>
    </table>

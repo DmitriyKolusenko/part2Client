@@ -1,11 +1,9 @@
 import { Component, Input, Injectable, OnInit } from '@angular/core';
-import {AutorizationComponent} from './autorization/autorization.component'
-import { Observable } from 'rxjs';
 import { Client } from './clients/client.model';
 import { AuthorizationService } from './autorization/autorization.service';
-import { LoginID } from './autorization/loginId.model';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Product } from './products/product.model';
 
 @Component({
   selector: 'app-root',
@@ -15,66 +13,47 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 @Injectable()
 export class AppComponent implements OnInit {
+
   title = 'TS-Shop';
-  public _authData: string;
+  public role: string = '';
+  private client: Client;
   public authStatus: boolean = false;
-  public _client: Client;
-  //public xhr: XMLHttpRequest = new XMLHttpRequest()
-  constructor(private authorizationService: AuthorizationService, private router: Router,
-    private http: HttpClient){  
+
+  constructor(private router: Router, private autorizationService: AuthorizationService,
+     private http: HttpClient){  
   }
 
   ngOnInit(): void { 
-  //  this.addStatus = this.authorizationSerice.authStatus
-  
+    const currentUser = localStorage.getItem('currentUser');
+    if(currentUser){
+      this.authStatus = true;
+      this.client = JSON.parse(currentUser);
+      this.role = this.client.roles;
+
+    } 
   }
 
-  public authLogin(): void{
-    let that = this;
-    this.authorizationService.loginId.subscribe(
-      (data) => {
-        //that._authData = this.authorizationService.currentUser;
-        that._authData = data['token'];
-       // this.xhr.open('GET',that._authData,false);
-        
-        console.log(that._authData);
-        let token: string = that._authData;
-        console.log(that.authStatus);
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.set('x-auth-token', token);
-        //headers = headers.append('x-requested-with', token);
-        console.log(token);
-        console.log(headers);
-        this.http.get<Client>('http://localhost:8080/api/clients/user',
-         {headers : headers}).subscribe(
-           (client: Client)=> {
-             this._client = client;
-             console.log(this._client);
-             that.authStatus = true;
-             that.router.navigate(['/profile']);
-           }
-         )       
-      },
-      (error) => {
-        console.log(error);
+  public setData(){
+    this.autorizationService.loginProcess.subscribe(
+      () => {
+        this.http.get<Client>('/api/clients/user').subscribe(
+              (client: Client) => {
+                this.role = client.roles;
+                localStorage.setItem('currentUser',JSON.stringify(client));
+                this.router.navigate(['/profile']);
+                this.authStatus = true;
+                
+              }
+            );
       }
-      )
-      
+    )
   }
 
-  public hasRole(role: string): boolean {
-    return this._client.roles == role;
+  public hasRole(roles: string): boolean {
+    return this.role == roles;
   }
   
   get addStatus(): boolean {
     return this.authStatus;
-  }
-
-  get sessionId(): string{
-    return this._authData;
-  }
-
-  get profile(): Client{
-    return this._client;
   }
 }

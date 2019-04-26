@@ -2,23 +2,43 @@
   <div class="ts-shop-loading-indicator"></div>
   <div>Loading</div>
 </div>
-<div [ngClass]="{ 'ts-shop-hidden': isLoading }">
-  <table class="ts-shop-base-table ts-shop-clients-table">
-    <thead class="ts-shop-base-table-header">
-      <tr>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Birthdate</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let client of clients">
-        <td>{{client.name}}</td>
-        <td>{{client.surname}}</td>
-        <td>{{client.dateofbirth | date : "MM/dd/yyyy" }}</td>
-        <td>{{client.email}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<table>
+  <tbody>
+    <tr>
+      <th>
+          <div [ngClass]="{ 'ts-shop-hidden': isLoading }">
+              <table class="ts-shop-base-table ts-shop-clients-table">
+                <thead class="ts-shop-base-table-header">
+                  <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Birthdate</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let client of clients" (click)="selectClient(client)">
+                    <td>{{client.name}}</td>
+                    <td>{{client.surname}}</td>
+                    <td>{{client.dateofbirth.dayOfMonth}} {{client.dateofbirth.month}} {{client.dateofbirth.year}}</td>
+                    <td>{{client.email}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+      </th>
+      <th>
+        <div [ngClass]="{'ts-shop-hidden': isLoading}">
+          <div *ngIf="isClientSelected()">
+              <div>Name: {{clientSelected.name}}</div>
+              <div>Surname: {{clientSelected.surname}}</div>
+              <div>Birthdate: {{clientSelected.dateofbirth.dayOfMonth}} {{clientSelected.dateofbirth.month}} {{clientSelected.dateofbirth.year}}</div>
+              <div>eMail: {{clientSelected.email}}</div>
+              <div>Role: {{clientSelected.roles}}</div>
+              <button *ngIf="clientSelected.roles=='CLIENT'" (click)="setRole()">Set MANAGER role</button>
+          </div>
+        </div>
+      </th>
+    </tr>
+  </tbody>
+</table>
